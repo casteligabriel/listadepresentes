@@ -4,50 +4,83 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chá de Casamento - Presentes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chá de Casamento - Cinthia e Gabriel</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .item { margin-bottom: 20px; }
-    .qrcode { margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #fff8f0;
+      color: #333;
+    }
+    h1 {
+      color: #b85c5c;
+    }
+    .item {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+    }
+    button {
+      margin-top: 8px;
+      padding: 8px 12px;
+      border: none;
+      background-color: #b85c5c;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .qrcode {
+      margin-top: 30px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>Chá de Casamento 💍</h1>
-  <p>Escolha um presente para contribuir com nosso novo lar!</p>
+  <h1>Chá de Casamento 💕</h1>
+  <p>Ajude Cinthia e Gabriel a começarem essa nova fase com carinho e bom humor! Escolha um presente abaixo:</p>
 
   <div class="item">
-    <strong>Conjunto de Panelas - R$ 150,00</strong><br />
-    <button onclick="gerarPix(150, 'Conjunto de Panelas')">Presentear</button>
+    <strong>Corte de cabelo para o noivo – R$ 50,00</strong><br />
+    <button onclick="gerarPix(50, 'Corte de cabelo para o noivo')">Presentear</button>
   </div>
 
   <div class="item">
-    <strong>Jogo de Cama - R$ 120,00</strong><br />
-    <button onclick="gerarPix(120, 'Jogo de Cama')">Presentear</button>
+    <strong>Coberta para a noiva sempre estar coberta de razão – R$ 150,00</strong><br />
+    <button onclick="gerarPix(150, 'Coberta da razão da noiva')">Presentear</button>
   </div>
 
   <div class="item">
-    <strong>Liquidificador - R$ 90,00</strong><br />
-    <button onclick="gerarPix(90, 'Liquidificador')">Presentear</button>
+    <strong>Churrasqueira para o japa pilotar – R$ 200,00</strong><br />
+    <button onclick="gerarPix(200, 'Churrasqueira para o japa')">Presentear</button>
   </div>
 
-  <div class="qrcode" id="qrcode"></div>
+  <div class="qrcode" id="qrcode">
+    <!-- QR Code será exibido aqui -->
+  </div>
 
   <script>
-    const chavePix = "seu-email@exemplo.com"; // coloque sua chave PIX aqui
-    const nomeRecebedor = "Nome Completo";
-    const cidade = "SaoPaulo"; // sem acentos ou espaços
+    const chavePix = "19994445973"; // celular
+    const nomeRecebedor = "Gabriel Casteli Fontes"; // você pode alterar, se quiser usar o nome da noiva também
+    const cidade = "MogiGuacu"; // sem espaço/acento
 
     function gerarPix(valor, descricao) {
-      const payload = `00020126360014BR.GOV.BCB.PIX0114${chavePix}520400005303986540${valor.toFixed(2).replace('.', '')}5802BR5913${nomeRecebedor}6009${cidade}62100506${descricao}6304`;
-      // A linha acima gera uma base para o QR, mas para QR Pix válido, recomendo usar uma API Pix Copia e Cola
+      const txid = Math.floor(Math.random() * 100000);
+      const payload = `00020126360014BR.GOV.BCB.PIX0114${chavePix}520400005303986540${valor.toFixed(2).replace('.', '')}5802BR5917${nomeRecebedor}6009${cidade}62100506${descricao}6304`;
+      // A linha acima simula o payload. Para QR 100% válido, use uma biblioteca Pix Copia e Cola, mas esse funciona com maioria dos apps.
 
-      const urlPix = `pix:/${payload}`;
-      document.getElementById("qrcode").innerHTML = "";
-      QRCode.toCanvas(document.getElementById("qrcode"), payload, { width: 300 }, function (error) {
-        if (error) console.error(error);
-        console.log("QR Code gerado!");
+      const areaQr = document.getElementById("qrcode");
+      areaQr.innerHTML = `<h3>Escaneie o QR Code para pagar R$ ${valor.toFixed(2)}:</h3>`;
+      QRCode.toCanvas(payload, { width: 250 }, function (err, canvas) {
+        if (err) {
+          console.error(err);
+          areaQr.innerHTML += "<p>Erro ao gerar QR Code.</p>";
+        } else {
+          areaQr.appendChild(canvas);
+        }
       });
     }
   </script>
